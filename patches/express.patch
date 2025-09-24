@@ -1,0 +1,22 @@
+diff --git a/Readme.md b/Readme.md
+index 7443b8185910857022736faff6087b55600e9a0e..daf7308575a61f0fefc17fbab334a3466c395f1d 100644
+--- a/Readme.md
++++ b/Readme.md
+@@ -4,6 +4,8 @@
+ 
+ **This project has a [Code of Conduct][].**
+ 
++#1312312
++
+ ## Table of contents
+ 
+ * [Installation](#Installation)
+diff --git a/index.js b/index.js
+index d219b0c878dc6136eb2096cffa140bf6bf2b8e9c..992bd72d3f6d0d709410b106751d5b17e55bbdd3 100644
+--- a/index.js
++++ b/index.js
+@@ -9,3 +9,4 @@
+ 'use strict';
+ 
+ module.exports = require('./lib/express');
++console.log('哈哈修改的')
