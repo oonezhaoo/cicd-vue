@@ -1,22 +1,38 @@
 name: Build and Deploy
-on: [push]
-permissions:
-  contents: write
+
+on:
+  push:
+    branches: [ main ]
+
 jobs:
   build-and-deploy:
-    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
-        run: |
-          npm ci
-          npm run build
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      # 核心步骤 1：安装 pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          folder: dist # The folder the action should deploy.
-          token: ${{secrets.DEV_CICD_VITE}}
+          version: 8 # 建议指定与您本地一致的 pnpm 版本
+
+      # 核心步骤 2：设置 Node.js 并配置 pnpm 缓存
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm' # 关键配置，用于缓存依赖
+
+      # 安装依赖（利用缓存和冻结的 lockfile）
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build project
+        run: pnpm run build # 请确保您 package.json 中的 build 脚本正确
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist # 请根据您的构建输出目录调整
