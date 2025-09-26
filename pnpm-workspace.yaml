@@ -1,5 +1,5 @@
 packages:
   # 匹配根目录下的 'packages' 文件夹中的所有子目录
   - 'packages/**'
-patchedDependencies:
-  express: patches/express.patch
+# patchedDependencies:
+#   express: patches/express.patch
